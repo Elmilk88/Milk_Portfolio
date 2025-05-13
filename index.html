@@ -1,102 +1,117 @@
-
 <!DOCTYPE html>
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Mon Portfolio</title>
+  <title>Portfolio Data Science – Milk</title>
   <style>
     body {
       font-family: 'Segoe UI', sans-serif;
       margin: 0;
       padding: 0;
-      background: #f5f5f5;
+      background: #f0f2f5;
       color: #333;
     }
     header {
-      background: #2c3e50;
+      background: #1f2e46;
       color: white;
       padding: 2rem;
       text-align: center;
     }
     section {
-      max-width: 900px;
+      max-width: 1000px;
       margin: 2rem auto;
-      padding: 1rem;
+      padding: 1.5rem;
       background: white;
-      border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
     }
-    h2 {
-      color: #2c3e50;
+    h1, h2 {
+      color: #1f2e46;
     }
     .project {
-      margin-bottom: 1.5rem;
+      margin-bottom: 2rem;
     }
     .project a {
-      color: #2980b9;
+      color: #007acc;
+      font-weight: bold;
       text-decoration: none;
+    }
+    .project a:hover {
+      text-decoration: underline;
+    }
+    p.translation {
+      font-style: italic;
+      color: #666;
+      margin-top: 0.3rem;
+      margin-bottom: 1.2rem;
+    }
+    footer {
+      text-align: center;
+      padding: 1rem;
+      color: #999;
     }
   </style>
 </head>
 <body>
 
 <header>
-  <h1>Bienvenue sur mon portfolio</h1>
-  <p>Je suis un développeur passionné par la data science et l’intelligence artificielle.</p>
+  <h1>Bienvenue sur mon portfolio Data Science</h1>
+  <p>Je suis un développeur passionné par l’intelligence artificielle, la data science et le machine learning.</p>
+  <p class="translation">Welcome to my Data Science portfolio. I am a passionate developer focused on AI, data science, and machine learning.</p>
 </header>
 
 <section>
   <h2>À propos de moi</h2>
-  <p>Je développe des projets en machine learning, deep learning, NLP et vision par ordinateur.</p>
+  <p>J’explore les domaines du machine learning, deep learning, NLP et vision par ordinateur. Mes projets sont orientés vers des cas d’usage concrets et des solutions déployables.</p>
+  <p class="translation">I explore machine learning, deep learning, NLP, and computer vision. My projects are focused on real-world applications and deployable solutions.</p>
 </section>
 
 <section>
-  <h2>Mes Projets</h2>
+  <h2>Mes Projets / My Projects</h2>
 
   <div class="project">
-    <h3>📈 Prédiction du churn client</h3>
-    <p>Modélisation complète du churn avec Random Forest, XGBoost et recommandations business.
-     <a href="customer-churn-predict.html" target="_blank">Voir le projet</a>
-   </p>
+    <h3>📈 Prédiction du churn client / Customer Churn Prediction</h3>
+    <p>Modélisation complète du churn avec Random Forest, XGBoost et recommandations business. <a href="customer-churn-predict.html" target="_blank">Voir le projet / View Project</a></p>
   </div>
 
   <div class="project">
-    <h3>💳 Détection de fraude bancaire</h3>
-    <p>Modèle de classification pour repérer les fraudes avec Random Forest. <a href="fraude-detection.html">Voir le projet</a></p>
+    <h3>💳 Détection de fraude bancaire / Credit Card Fraud Detection</h3>
+    <p>Classification de transactions frauduleuses à l’aide de modèles robustes et SMOTE. <a href="fraude-detection.html" target="_blank">Voir le projet / View Project</a></p>
   </div>
 
   <div class="project">
-   <h3>💻 Analyse des avis d'ordinateurs portables Flipkart</h3>
-   <p>Analyse exploratoire complète des données d’avis d’utilisateurs. 
-     <a href="flipkart-laptop-reviews.html" target="_blank">Voir le projet</a>
-   </p>
-  </div>
-
- <div class="project">
-  <h3>🏠 Prédiction des prix immobiliers</h3>
-  <p>Modèle de régression pour prédire les prix à partir des caractéristiques des logements.
-     <a href="housing-predict.html" target="_blank">Voir le projet</a>
-  </p>
- </div>
-
-
-  <div class="project">
-    <h3>🧠 Détection de la dépression</h3>
-    <p>Classification à partir de données de santé mentale. <a href="#">Voir le projet</a></p>
+    <h3>💻 Analyse d’avis Flipkart / Flipkart Laptop Review Analysis</h3>
+    <p>Analyse exploratoire des évaluations produits à partir d’un dataset de Flipkart. <a href="flipkart-laptop-reviews.html" target="_blank">Voir le projet / View Project</a></p>
   </div>
 
   <div class="project">
-    <h3>📷 Détection d’objets avec YOLOv5</h3>
-    <p>Détection en temps réel avec OpenCV et YOLOv5. <a href="#">Voir le projet</a></p>
+    <h3>🏠 Prédiction immobilière / Housing Price Prediction</h3>
+    <p>Modèle de régression pour estimer les prix immobiliers selon les caractéristiques des logements. <a href="housing-predict.html" target="_blank">Voir le projet / View Project</a></p>
   </div>
+
+  <div class="project">
+    <h3>🧠 Détection de la dépression / Depression Detection</h3>
+    <p>Classification d’états mentaux à partir de données de santé psychologique. <a href="#">Voir le projet / View Project</a></p>
+  </div>
+
+  <div class="project">
+    <h3>📷 Détection d’objets avec YOLOv5 / Object Detection with YOLOv5</h3>
+    <p>Détection en temps réel avec OpenCV et YOLOv5 sur des flux vidéo. <a href="#">Voir le projet / View Project</a></p>
+  </div>
+
 </section>
 
 <section>
   <h2>Contact</h2>
-  <p>Email : gueyemilk88@gmail.com</p>
-  <p>GitHub : <a href="https://github.com/Elmilk88" target="_blank">https://github.com/ton-utilisateur</a></p>
+  <p>Email : <a href="mailto:gueyemilk88@gmail.com">gueyemilk88@gmail.com</a></p>
+  <p>GitHub : <a href="https://github.com/Elmilk88" target="_blank">https://github.com/Elmilk88</a></p>
+  <p class="translation">Feel free to reach out or check my code on GitHub.</p>
 </section>
+
+<footer>
+  &copy; 2025 – Milk Portfolio. Tous droits réservés.
+</footer>
 
 </body>
 </html>
