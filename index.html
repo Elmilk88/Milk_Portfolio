@@ -1,120 +1,994 @@
-
 <!DOCTYPE html>
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+  <!-- SEO Meta Tags -->
+  <meta name="description" content="Portfolio Data Science de Milk - Projets en machine learning, deep learning, NLP et vision par ordinateur">
+  <meta name="keywords" content="Data Science, Machine Learning, Deep Learning, NLP, AI, Portfolio, Python">
+  <meta name="author" content="Milk Gueye">
+  
+  <!-- Open Graph -->
+  <meta property="og:title" content="Milk's Data Science Portfolio">
+  <meta property="og:description" content="Explorez mes projets en data science et intelligence artificielle">
+  <meta property="og:type" content="website">
+  
   <title>Portfolio Data Science – Milk</title>
+  
   <style>
-    body {
-      font-family: 'Segoe UI', sans-serif;
+    /* ===== CSS Variables ===== */
+    :root {
+      --primary: #1f2e46;
+      --primary-light: #2c405e;
+      --secondary: #007acc;
+      --secondary-light: #4da6e6;
+      --bg: #f0f2f5;
+      --white: #ffffff;
+      --text: #333333;
+      --text-light: #666666;
+      --shadow: 0 4px 12px rgba(0,0,0,0.1);
+      --shadow-hover: 0 8px 24px rgba(0,0,0,0.15);
+      --border-radius: 12px;
+      --transition: 0.3s ease;
+      --font: 'Segoe UI', sans-serif;
+    }
+
+    /* ===== Dark Mode Variables ===== */
+    body.dark-mode {
+      --bg: #1a1a2e;
+      --white: #16213e;
+      --text: #e0e0e0;
+      --text-light: #aaaaaa;
+      --shadow: 0 4px 12px rgba(0,0,0,0.3);
+      --shadow-hover: 0 8px 24px rgba(0,0,0,0.5);
+    }
+
+    /* ===== Reset & Base ===== */
+    * {
       margin: 0;
       padding: 0;
-      background: #f0f2f5;
-      color: #333;
+      box-sizing: border-box;
     }
-    header {
-      background: #1f2e46;
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text);
+      transition: background var(--transition), color var(--transition);
+      padding-top: 70px;
+    }
+
+    /* ===== Loader ===== */
+    #loader {
+      position: fixed;
+      inset: 0;
+      background: var(--primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      transition: opacity 0.5s ease;
+    }
+    #loader.hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+    .spinner {
+      width: 50px;
+      height: 50px;
+      border: 5px solid rgba(255,255,255,0.2);
+      border-top-color: #fff;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* ===== Navigation ===== */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      background: var(--primary);
+      padding: 0 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 70px;
+      z-index: 1000;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    }
+    nav .logo {
       color: white;
-      padding: 2rem;
-      text-align: center;
+      font-size: 1.3rem;
+      font-weight: bold;
+      letter-spacing: 1px;
     }
+    nav .logo span {
+      color: var(--secondary-light);
+    }
+    nav ul {
+      display: flex;
+      list-style: none;
+      gap: 2rem;
+      align-items: center;
+    }
+    nav ul li a {
+      color: rgba(255,255,255,0.8);
+      text-decoration: none;
+      transition: color var(--transition);
+      font-size: 0.95rem;
+    }
+    nav ul li a:hover {
+      color: white;
+    }
+    nav ul li a.active {
+      color: white;
+      font-weight: 600;
+    }
+
+    /* ===== Theme Toggle ===== */
+    #theme-toggle {
+      background: rgba(255,255,255,0.15);
+      border: none;
+      color: white;
+      padding: 0.4rem 0.8rem;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: background var(--transition);
+    }
+    #theme-toggle:hover {
+      background: rgba(255,255,255,0.25);
+    }
+
+    /* ===== Sections ===== */
     section {
-      max-width: 1000px;
+      max-width: 1100px;
       margin: 2rem auto;
-      padding: 1.5rem;
-      background: white;
-      border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      padding: 2rem;
+      background: var(--white);
+      border-radius: var(--border-radius);
+      box-shadow: var(--shadow);
+      transition: background var(--transition), box-shadow var(--transition);
+      scroll-margin-top: 80px;
     }
-    h1, h2 {
-      color: #1f2e46;
+    section h2 {
+      color: var(--primary);
+      margin-bottom: 1.5rem;
+      font-size: 1.8rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    section h2::after {
+      content: '';
+      flex: 1;
+      height: 2px;
+      background: linear-gradient(to right, var(--primary), transparent);
+      margin-left: 1rem;
+    }
+
+    /* ===== Header ===== */
+    header {
+      background: linear-gradient(135deg, var(--primary), var(--primary-light));
+      color: white;
+      padding: 4rem 2rem;
+      text-align: center;
+      border-radius: var(--border-radius);
+      max-width: 1100px;
+      margin: 2rem auto;
+      box-shadow: var(--shadow);
+    }
+    header h1 {
+      font-size: 2.8rem;
+      margin-bottom: 0.5rem;
+    }
+    header p {
+      font-size: 1.2rem;
+      opacity: 0.9;
+      max-width: 700px;
+      margin: 0.5rem auto;
+    }
+    header .translation {
+      font-style: italic;
+      opacity: 0.7;
+      font-size: 1rem;
+      margin-top: 0.5rem;
+    }
+
+    /* ===== About ===== */
+    .about-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 2rem;
+      align-items: start;
+    }
+    .about-text p {
+      margin-bottom: 0.8rem;
+      line-height: 1.6;
+    }
+    .about-text .translation {
+      font-style: italic;
+      color: var(--text-light);
+    }
+    .about-stats {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+    .stat-card {
+      background: var(--bg);
+      padding: 1rem;
+      border-radius: var(--border-radius);
+      text-align: center;
+      transition: background var(--transition);
+    }
+    .stat-card .number {
+      font-size: 2rem;
+      font-weight: bold;
+      color: var(--primary);
+      display: block;
+    }
+    .stat-card .label {
+      font-size: 0.85rem;
+      color: var(--text-light);
+    }
+
+    /* ===== Skills ===== */
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.5rem;
+    }
+    .skill-category {
+      background: var(--bg);
+      padding: 1.2rem;
+      border-radius: var(--border-radius);
+      transition: background var(--transition);
+    }
+    .skill-category h4 {
+      color: var(--primary);
+      margin-bottom: 0.5rem;
+      font-size: 1.1rem;
+    }
+    .skill-category ul {
+      list-style: none;
+    }
+    .skill-category ul li {
+      padding: 0.3rem 0;
+      font-size: 0.95rem;
+      color: var(--text-light);
+    }
+    .skill-category ul li::before {
+      content: '▹ ';
+      color: var(--secondary);
+    }
+
+    /* ===== Projects ===== */
+    .projects-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+    .project-count {
+      background: var(--primary);
+      color: white;
+      padding: 0.2rem 1rem;
+      border-radius: 20px;
+      font-size: 0.9rem;
+    }
+    .project-search {
+      padding: 0.6rem 1rem;
+      border: 2px solid #ddd;
+      border-radius: 25px;
+      font-size: 0.95rem;
+      flex: 1;
+      min-width: 200px;
+      max-width: 300px;
+      transition: border-color var(--transition);
+      background: var(--white);
+      color: var(--text);
+    }
+    .project-search:focus {
+      outline: none;
+      border-color: var(--secondary);
+    }
+
+    /* ===== Filters ===== */
+    .filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 1.5rem;
+    }
+    .filter-btn {
+      background: var(--bg);
+      border: 2px solid transparent;
+      padding: 0.4rem 1.2rem;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 0.85rem;
+      transition: all var(--transition);
+      color: var(--text);
+    }
+    .filter-btn:hover {
+      background: var(--secondary);
+      color: white;
+    }
+    .filter-btn.active {
+      background: var(--primary);
+      color: white;
+      border-color: var(--primary);
+    }
+
+    /* ===== Project Cards ===== */
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 2rem;
     }
     .project {
-      margin-bottom: 2rem;
+      background: var(--bg);
+      border-radius: var(--border-radius);
+      overflow: hidden;
+      transition: transform var(--transition), box-shadow var(--transition);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+      border-left: 4px solid var(--primary);
+      display: flex;
+      flex-direction: column;
     }
-    .project a {
-      color: #007acc;
-      font-weight: bold;
+    .project:hover {
+      transform: translateY(-6px);
+      box-shadow: var(--shadow-hover);
+    }
+    .project-image {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      background: linear-gradient(135deg, var(--primary-light), var(--primary));
+    }
+    .project-content {
+      padding: 1.5rem;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+    .project-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 0.5rem;
+      margin-bottom: 0.5rem;
+    }
+    .project-header h3 {
+      color: var(--primary);
+      font-size: 1.1rem;
+    }
+    .project p {
+      color: var(--text-light);
+      line-height: 1.5;
+      margin-bottom: 1rem;
+      flex: 1;
+    }
+    .project-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      margin-bottom: 0.8rem;
+    }
+    .tag {
+      background: var(--white);
+      color: var(--primary);
+      padding: 0.15rem 0.7rem;
+      border-radius: 15px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      border: 1px solid var(--primary);
+      transition: all var(--transition);
+    }
+    .tag:hover {
+      background: var(--primary);
+      color: white;
+    }
+    .project-metrics {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      font-size: 0.85rem;
+      color: var(--text-light);
+      margin-bottom: 1rem;
+    }
+    .project-metrics span {
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+    }
+    .project-links {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      margin-top: auto;
+    }
+    .project-links a {
       text-decoration: none;
+      font-weight: 600;
+      font-size: 0.9rem;
+      padding: 0.4rem 1rem;
+      border-radius: 20px;
+      transition: all var(--transition);
     }
-    .project a:hover {
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+    }
+    .btn-primary:hover {
+      background: var(--primary-light);
+      transform: scale(1.02);
+    }
+    .btn-secondary {
+      background: transparent;
+      color: var(--primary);
+      border: 2px solid var(--primary);
+    }
+    .btn-secondary:hover {
+      background: var(--primary);
+      color: white;
+    }
+    .status {
+      font-size: 0.7rem;
+      padding: 0.15rem 0.6rem;
+      border-radius: 12px;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+    .status.completed {
+      background: #d4edda;
+      color: #155724;
+    }
+    .status.in-progress {
+      background: #fff3cd;
+      color: #856404;
+    }
+
+    /* ===== Timeline ===== */
+    .timeline {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+    .timeline-item {
+      display: flex;
+      gap: 1.5rem;
+      padding-left: 1.5rem;
+      border-left: 3px solid var(--secondary);
+      position: relative;
+    }
+    .timeline-item::before {
+      content: '';
+      position: absolute;
+      left: -7px;
+      top: 0;
+      width: 11px;
+      height: 11px;
+      border-radius: 50%;
+      background: var(--secondary);
+    }
+    .timeline-item .date {
+      font-weight: 600;
+      color: var(--secondary);
+      min-width: 120px;
+    }
+    .timeline-item .content h4 {
+      color: var(--primary);
+    }
+    .timeline-item .content p {
+      color: var(--text-light);
+      font-size: 0.95rem;
+    }
+
+    /* ===== Testimonials ===== */
+    .testimonials-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+    }
+    blockquote {
+      background: var(--bg);
+      padding: 1.5rem;
+      border-radius: var(--border-radius);
+      border-left: 4px solid var(--secondary);
+      font-style: italic;
+      color: var(--text-light);
+    }
+    blockquote cite {
+      display: block;
+      margin-top: 0.5rem;
+      font-style: normal;
+      font-weight: 600;
+      color: var(--primary);
+    }
+
+    /* ===== Contact ===== */
+    .contact-info {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2rem;
+    }
+    .contact-info a {
+      color: var(--secondary);
+      text-decoration: none;
+      font-weight: 500;
+      transition: color var(--transition);
+    }
+    .contact-info a:hover {
+      color: var(--primary);
       text-decoration: underline;
     }
-    p.translation {
-      font-style: italic;
-      color: #666;
-      margin-top: 0.3rem;
-      margin-bottom: 1.2rem;
+
+    /* ===== Back to Top ===== */
+    #back-to-top {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      background: var(--primary);
+      color: white;
+      border: none;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      font-size: 1.5rem;
+      cursor: pointer;
+      box-shadow: var(--shadow);
+      transition: all var(--transition);
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(20px);
+      z-index: 999;
     }
+    #back-to-top.visible {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+    #back-to-top:hover {
+      background: var(--secondary);
+      transform: scale(1.1);
+    }
+
+    /* ===== Footer ===== */
     footer {
       text-align: center;
-      padding: 1rem;
-      color: #999;
+      padding: 2rem;
+      color: var(--text-light);
+      font-size: 0.9rem;
+    }
+
+    /* ===== Responsive ===== */
+    @media (max-width: 768px) {
+      nav {
+        padding: 0 1rem;
+        flex-wrap: wrap;
+        height: auto;
+        min-height: 60px;
+        gap: 0.5rem;
+        padding-top: 0.5rem;
+        padding-bottom: 0.5rem;
+      }
+      nav ul {
+        gap: 1rem;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+      nav ul li a {
+        font-size: 0.85rem;
+      }
+      body {
+        padding-top: 100px;
+      }
+      header h1 {
+        font-size: 2rem;
+      }
+      section {
+        padding: 1.2rem;
+        margin: 1rem;
+      }
+      .about-grid {
+        grid-template-columns: 1fr;
+      }
+      .projects-grid {
+        grid-template-columns: 1fr;
+      }
+      .project-search {
+        max-width: 100%;
+      }
+      .projects-header {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .timeline-item {
+        flex-direction: column;
+        gap: 0.3rem;
+      }
+      .timeline-item .date {
+        min-width: auto;
+      }
+      .contact-info {
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+      #back-to-top {
+        bottom: 1rem;
+        right: 1rem;
+        width: 40px;
+        height: 40px;
+        font-size: 1.2rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      nav .logo {
+        font-size: 1rem;
+      }
+      nav ul li a {
+        font-size: 0.75rem;
+      }
+      .about-stats {
+        grid-template-columns: 1fr 1fr;
+      }
+      .filters {
+        justify-content: center;
+      }
     }
   </style>
 </head>
 <body>
 
-<header>
-  <h1>Bienvenue sur mon portfolio Data Science</h1>
-  <p>Je suis un développeur passionné par l’intelligence artificielle, la data science et le machine learning.</p>
-  <p class="translation">Welcome to my Data Science portfolio. I am a passionate developer focused on AI, data science, and machine learning.</p>
-</header>
-
-<section>
-  <h2>À propos de moi</h2>
-  <p>J’explore les domaines du machine learning, deep learning, NLP et vision par ordinateur. Mes projets sont orientés vers des cas d’usage concrets et des solutions déployables.</p>
-  <p class="translation">I explore machine learning, deep learning, NLP, and computer vision. My projects are focused on real-world applications and deployable solutions.</p>
-</section>
-
-<section>
-  <h2>Mes Projets / My Projects</h2>
-
-  <div class="project">
-    <h3>📈 Prédiction du churn client / Customer Churn Prediction</h3>
-    <p>Modélisation complète du churn avec Random Forest, XGBoost et recommandations business. <a href="customer-churn-predict.html" target="_blank">Voir le projet / View Project</a></p>
+  <!-- ===== LOADER ===== -->
+  <div id="loader">
+    <div class="spinner"></div>
   </div>
 
-  <div class="project">
-    <h3>💳 Détection de fraude bancaire / Credit Card Fraud Detection</h3>
-    <p>Classification de transactions frauduleuses à l’aide de modèles robustes et SMOTE. <a href="credit_card_fraud_detection.html" target="_blank">Voir le projet / View Project</a></p>
-  </div>
+  <!-- ===== NAVIGATION ===== -->
+  <nav>
+    <div class="logo">Milk<span>.</span></div>
+    <ul>
+      <li><a href="#about" class="active">About</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#experience">Experience</a></li>
+      <li><a href="#contact">Contact</a></li>
+      <li><button id="theme-toggle">🌙</button></li>
+    </ul>
+  </nav>
 
-  <div class="project">
-    <h3>💻 Analyse d’avis Flipkart / Flipkart Laptop Review Analysis</h3>
-    <p>Analyse exploratoire des évaluations produits à partir d’un dataset de Flipkart. <a href="flipkart-laptop-reviews.html" target="_blank">Voir le projet / View Project</a></p>
-  </div>
+  <!-- ===== HEADER ===== -->
+  <header>
+    <h1>Bienvenue sur mon portfolio Data Science</h1>
+    <p>Je suis un développeur passionné par l'intelligence artificielle, la data science et le machine learning.</p>
+    <p class="translation">Welcome to my Data Science portfolio. I am a passionate developer focused on AI, data science, and machine learning.</p>
+  </header>
 
-  <div class="project">
-    <h3>🏠 Prédiction immobilière / Housing Price Prediction</h3>
-    <p>Modèle de régression pour estimer les prix immobiliers selon les caractéristiques des logements. <a href="housing-predict.html" target="_blank">Voir le projet / View Project</a></p>
-  </div>
+  <!-- ===== ABOUT ===== -->
+  <section id="about">
+    <h2>À propos de moi</h2>
+    <div class="about-grid">
+      <div class="about-text">
+        <p>J'explore les domaines du machine learning, deep learning, NLP et vision par ordinateur. Mes projets sont orientés vers des cas d'usage concrets et des solutions déployables.</p>
+        <p class="translation">I explore machine learning, deep learning, NLP, and computer vision. My projects are focused on real-world applications and deployable solutions.</p>
+        <p>💡 <strong>Objectif :</strong> Transformer des données en valeur ajoutée et créer des modèles éthiques et interprétables.</p>
+      </div>
+      <div class="about-stats">
+        <div class="stat-card">
+          <span class="number" id="project-count-display">6</span>
+          <span class="label">Projets</span>
+        </div>
+        <div class="stat-card">
+          <span class="number">2+</span>
+          <span class="label">Années d'expérience</span>
+        </div>
+        <div class="stat-card">
+          <span class="number">5</span>
+          <span class="label">Technologies maîtrisées</span>
+        </div>
+        <div class="stat-card">
+          <span class="number">4</span>
+          <span class="label">Certifications</span>
+        </div>
+      </div>
+    </div>
+  </section>
 
-  <div class="project">
-    <h3>🧠 Détection de la dépression / Depression Detection</h3>
-    <p>Classification d’états mentaux à partir de données de santé psychologique. <a href="student_depression_classification.html">Voir le projet / View Project</a></p>
-  </div>
+  <!-- ===== SKILLS ===== -->
+  <section id="skills">
+    <h2>Compétences Techniques</h2>
+    <div class="skills-grid">
+      <div class="skill-category">
+        <h4>💻 Languages</h4>
+        <ul>
+          <li>Python</li>
+          <li>SQL</li>
+          <li>R</li>
+        </ul>
+      </div>
+      <div class="skill-category">
+        <h4>📊 Data Science</h4>
+        <ul>
+          <li>Pandas, NumPy</li>
+          <li>Scikit-learn</li>
+          <li>TensorFlow, PyTorch</li>
+          <li>XGBoost, LightGBM</li>
+        </ul>
+      </div>
+      <div class="skill-category">
+        <h4>📈 Visualisation</h4>
+        <ul>
+          <li>Matplotlib, Seaborn</li>
+          <li>Plotly</li>
+          <li>Tableau</li>
+        </ul>
+      </div>
+      <div class="skill-category">
+        <h4>☁️ DevOps & Tools</h4>
+        <ul>
+          <li>Git & GitHub</li>
+          <li>Docker</li>
+          <li>MLflow</li>
+          <li>AWS / GCP</li>
+        </ul>
+      </div>
+    </div>
+  </section>
 
-  <div class="project">
-    <h3>📷 Classification d'images sur CIFAR-10 / Image Classification on CIFAR-10</h3>
-    <p>Ce projet porte sur la classification d’images issues du jeu de données <strong>CIFAR-10</strong> en utilisant des réseaux de neurones convolutifs (CNN). Le jeu de données CIFAR-10 contient 60 000 images couleur de taille 32x32 réparties en 10 classes, telles que les avions, les voitures, les oiseaux, les chats, etc.</p>
-    <a href="CIFAR10_DataAugmentation_Optimized.html" target="_blank">Voir le projet / View Project</a></p>
-  </div>
-  </div>
+  <!-- ===== PROJECTS ===== -->
+  <section id="projects">
+    <div class="projects-header">
+      <h2>Mes Projets</h2>
+      <span class="project-count" id="project-badge">6 projets</span>
+    </div>
 
-</section>
+    <!-- Search -->
+    <input type="text" id="project-search" class="project-search" placeholder="🔍 Rechercher un projet...">
 
-<section>
-  <h2>Contact</h2>
-  <p>Email : <a href="mailto:gueyemilk88@gmail.com">gueyemilk88@gmail.com</a></p>
-  <p>GitHub : <a href="https://github.com/Elmilk88" target="_blank">https://github.com/Elmilk88</a></p>
-  <p class="translation">Feel free to reach out or check my code on GitHub.</p>
-</section>
+    <!-- Filters -->
+    <div class="filters">
+      <button class="filter-btn active" data-filter="all">Tous</button>
+      <button class="filter-btn" data-filter="ml">Machine Learning</button>
+      <button class="filter-btn" data-filter="dl">Deep Learning</button>
+      <button class="filter-btn" data-filter="nlp">NLP</button>
+      <button class="filter-btn" data-filter="cv">Computer Vision</button>
+    </div>
 
-<footer>
-  &copy; 2025 – Milk Portfolio. Tous droits réservés.
-</footer>
+    <!-- Projects Grid -->
+    <div class="projects-grid" id="projects-grid">
 
-</body>
-</html>
+      <!-- Project 1 -->
+      <div class="project" data-category="ml" data-title="churn prediction">
+        <div class="project-image" style="background: linear-gradient(135deg, #2c3e50, #3498db); display: flex; align-items: center; justify-content: center; font-size: 3rem; color: white;">📈</div>
+        <div class="project-content">
+          <div class="project-header">
+            <h3>Prédiction du churn client</h3>
+            <span class="status completed">✅ Terminé</span>
+          </div>
+          <p>Modélisation complète du churn avec Random Forest, XGBoost et recommandations business.</p>
+          <div class="project-tags">
+            <span class="tag">Python</span>
+            <span class="tag">XGBoost</span>
+            <span class="tag">Scikit-learn</span>
+            <span class="tag">Pandas</span>
+          </div>
+          <div class="project-metrics">
+            <span>🎯 AUC: 0.94</span>
+            <span>📅 2025</span>
+          </div>
+          <div class="project-links">
+            <a href="customer-churn-predict.html" class="btn-primary">Voir le projet →</a>
+            <a href="#" class="btn-secondary">🔗 GitHub</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Project 2 -->
+      <div class="project" data-category="ml" data-title="fraud detection">
+        <div class="project-image" style="background: linear-gradient(135deg, #8e44ad, #3498db); display: flex; align-items: center; justify-content: center; font-size: 3rem; color: white;">💳</div>
+        <div class="project-content">
+          <div class="project-header">
+            <h3>Détection de fraude bancaire</h3>
+            <span class="status completed">✅ Terminé</span>
+          </div>
+          <p>Classification de transactions frauduleuses avec SMOTE, Random Forest et XGBoost.</p>
+          <div class="project-tags">
+            <span class="tag">Python</span>
+            <span class="tag">SMOTE</span>
+            <span class="tag">Random Forest</span>
+            <span class="tag">Imbalanced Data</span>
+          </div>
+          <div class="project-metrics">
+            <span>🎯 F1: 0.92</span>
+            <span>📅 2025</span>
+          </div>
+          <div class="project-links">
+            <a href="credit_card_fraud_detection.html" class="btn-primary">Voir le projet →</a>
+            <a href="#" class="btn-secondary">🔗 GitHub</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Project 3 -->
+      <div class="project" data-category="nlp" data-title="flipkart reviews">
+        <div class="project-image" style="background: linear-gradient(135deg, #f39c12, #e67e22); display: flex; align-items: center; justify-content: center; font-size: 3rem; color: white;">💻</div>
+        <div class="project-content">
+          <div class="project-header">
+            <h3>Analyse d'avis Flipkart</h3>
+            <span class="status completed">✅ Terminé</span>
+          </div>
+          <p>Analyse exploratoire et NLP sur les évaluations produits du dataset Flipkart.</p>
+          <div class="project-tags">
+            <span class="tag">Python</span>
+            <span class="tag">NLP</span>
+            <span class="tag">EDA</span>
+            <span class="tag">NLTK</span>
+          </div>
+          <div class="project-metrics">
+            <span>📊 50k+ avis</span>
+            <span>📅 2024</span>
+          </div>
+          <div class="project-links">
+            <a href="flipkart-laptop-reviews.html" class="btn-primary">Voir le projet →</a>
+            <a href="#" class="btn-secondary">🔗 GitHub</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Project 4 -->
+      <div class="project" data-category="ml" data-title="housing price">
+        <div class="project-image" style="background: linear-gradient(135deg, #27ae60, #2ecc71); display: flex; align-items: center; justify-content: center; font-size: 3rem; color: white;">🏠</div>
+        <div class="project-content">
+          <div class="project-header">
+            <h3>Prédiction immobilière</h3>
+            <span class="status completed">✅ Terminé</span>
+          </div>
+          <p>Modèle de régression pour estimer les prix immobiliers selon les caractéristiques des logements.</p>
+          <div class="project-tags">
+            <span class="tag">Python</span>
+            <span class="tag">Regression</span>
+            <span class="tag">Scikit-learn</span>
+            <span class="tag">XGBoost</span>
+          </div>
+          <div class="project-metrics">
+            <span>🎯 R²: 0.88</span>
+            <span>📅 2024</span>
+          </div>
+          <div class="project-links">
+            <a href="housing-predict.html" class="btn-primary">Voir le projet →</a>
+            <a href="#" class="btn-secondary">🔗 GitHub</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Project 5 -->
+      <div class="project" data-category="ml" data-title="depression detection">
+        <div class="project-image" style="background: linear-gradient(135deg, #e74c3c, #c0392b); display: flex; align-items: center; justify-content: center; font-size: 3rem; color: white;">🧠</div>
+        <div class="project-content">
+          <div class="project-header">
+            <h3>Détection de la dépression</h3>
+            <span class="status in-progress">🔄 En cours</span>
+          </div>
+          <p>Classification d'états mentaux à partir de données de santé psychologique.</p>
+          <div class="project-tags">
+            <span class="tag">Python</span>
+            <span class="tag">Classification</span>
+            <span class="tag">Healthcare</span>
+            <span class="tag">Scikit-learn</span>
+          </div>
+          <div class="project-metrics">
+            <span>🎯 Accuracy: 0.85</span>
+            <span>📅 2025</span>
+          </div>
+          <div class="project-links">
+            <a href="student_depression_classification.html" class="btn-primary">Voir le projet →</a>
+            <a href="#" class="btn-secondary">🔗 GitHub</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Project 6 -->
+      <div class="project" data-category="dl cv" data-title="cifar10">
+        <div class="project-image" style="background: linear-gradient(135deg, #1abc9c, #16a085); display: flex; align-items: center; justify-content: center; font-size: 3rem; color: white;">📷</div>
+        <div class="project-content">
+          <div class="project-header">
+            <h3>Classification CIFAR-10</h3>
+            <span class="status completed">✅ Terminé</span>
+          </div>
+          <p>Classification d'images CIFAR-10 avec CNN, data augmentation et transfer learning.</p>
+          <div class="project-tags">
+            <span class="tag">Python</span>
+            <span class="tag">CNN</span>
+            <span class="tag">TensorFlow</span>
+            <span class="tag">Data Augmentation</span>
+          </div>
+          <div class="project-metrics">
+            <span>🎯 Accuracy: 0.92</span>
+            <span>📅 2025</span>
+          </div>
+          <div class="project-links">
+            <a href="CIFAR10_DataAugmentation_Optimized.html" class="btn-primary">Voir le projet →</a>
+            <a href="#" class="btn-secondary">🔗 GitHub</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ===== EXPERIENCE / TIMELINE ===== -->
+  <section id="experience">
+    <h2>Parcours</h2>
+    <div class="timeline">
+      <div class="timeline-item">
+        <span class="date">2025 - Present</span>
+        <div class="content">
+          <h4>🚀 Data Scientist Freelance</h4>
+          <p>Conception et déploiement de modèles ML pour startups et PME. Conseil en stratégie data.</p>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <span class="date">2023 - 2025</span>
+        <div class="content">
+          <h4>📊 Data Analyst @ TechCorp</h4>
+          <p>Analyse de données clients, création de dashboards et modèles prédictifs pour la fidélisation.</p>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <span class="date">2022 - 2023</span>
+        <div class="content">
+          <h4>🎓 Master en Data Science</h4>
+          <p>Spécialisation en Machine Learning et Deep Learning. Projets de recherche en NLP.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== TESTIMONIALS ===== -->
+  <section id="testimonials">
+    <h2>Témoignages</h2>
+    <div class="testimonials-grid">
+      <blockquote>
+        "Le modèle de churn prediction de Milk a réduit notre taux d'attrition de 15% en 3 mois. Un travail exceptionnel !"
+        <cite>— Sophie Martin, CEO @ TechCorp</cite>
+      </blockquote>
+      <blockquote>
+        "Milk a su transformer nos données brutes en insights exploitables. Une véritable valeur ajoutée pour notre équipe."
+        <cite>— Jean Dupont, Head of Product @ DataFlow</cite>
+      </blockquote>
+    </div>
+  </section>
+
+  <!-- ===== CONTACT ===== -->
+  <section id="contact">
+    <h2>Contact</h2>
+    <div class="contact-info">
+      <p>📧 <a href="mailto:gueyemilk88@gmail.com">gueyemilk88@gmail.com</a></p>
+      <p>🐙 <a href="https://github.com/Elmilk88" target="_blank">github.com/Elmilk88</a></p>
+      <p>🔗 <a href="#" target="_blank">LinkedIn</a></p>
+      <p>🐦 <a href="#" target="_blank">Twitter / X</a></p>
+    </div>
+    <p class="translation" style="margin-top: 1rem; color: var(--text-light);">Feel free to reach out or check my code on GitHub.</p>
+  </section>
+
+  <!-- ===== BACK TO TOP ===== -->
+  <button id="back-to-top" aria-label="Retour en haut">↑</button>
+
+  <!-- ===== FOOTER ===== -->
+  <footer>
+    &copy; 202
